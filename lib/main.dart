@@ -27,13 +27,11 @@ class WalkWithMeScreen extends StatefulWidget {
   @override
   State<WalkWithMeScreen> createState() => _WalkWithMeScreenState();
 }
-
 class _WalkWithMeScreenState extends State<WalkWithMeScreen> {
   Timer? _checkInTimer;
   int _remainingCheckIn = 60;
   int _selectedTimerSeconds = 60;
   bool _isWalking = false;
-  bool _isFakeCallScheduled = false;
 
   Position? _currentPosition;
 
@@ -52,7 +50,7 @@ class _WalkWithMeScreenState extends State<WalkWithMeScreen> {
   String? selectedDistrict;
   String? selectedPlace;
 
-  final Map<String, Map<String, Map<String, double>>> locations = {
+ final Map<String, Map<String, Map<String, double>>> locations = {
     "Thiruvananthapuram": {
       "Kowdiar": {"lat": 8.5230, "lng": 76.9492},
       "Technopark": {"lat": 8.5584, "lng": 76.8800},
@@ -125,22 +123,28 @@ class _WalkWithMeScreenState extends State<WalkWithMeScreen> {
       "Bekal": {"lat": 12.3940, "lng": 75.0330},
     },
   };
-
+  // ==============================
+  // FORMAT TIMER
+  // ==============================
   String formatTime(int seconds) {
     int minutes = seconds ~/ 60;
     int remainingSeconds = seconds % 60;
     return "$minutes:${remainingSeconds.toString().padLeft(2, '0')}";
   }
 
-  Future<void> _requestPermission() async {
-    await Permission.location.request();
-  }
-
+  // ==============================
+  // LOCATION
+  // ==============================
   Future<void> _getLocation() async {
+    await Permission.location.request();
     _currentPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      desiredAccuracy: LocationAccuracy.high,
+    );
   }
 
+  // ==============================
+  // START WALK
+  // ==============================
   void _startWalk() async {
     if (selectedDistrict == null ||
         selectedPlace == null ||
@@ -151,7 +155,6 @@ class _WalkWithMeScreenState extends State<WalkWithMeScreen> {
       return;
     }
 
-    await _requestPermission();
     await _getLocation();
 
     setState(() {
@@ -207,156 +210,278 @@ class _WalkWithMeScreenState extends State<WalkWithMeScreen> {
     });
   }
 
-  void _triggerFakeCall() {
-    if (_isFakeCallScheduled) return;
-
-    setState(() {
-      _isFakeCallScheduled = true;
-    });
-
-    Future.delayed(const Duration(seconds: 5), () {
-      setState(() {
-        _isFakeCallScheduled = false;
-      });
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const FakeCallScreen()),
-      );
-    });
-  }
-
   @override
   void dispose() {
     _checkInTimer?.cancel();
     super.dispose();
   }
 
+  // ==============================
+  // UI
+  // ==============================
   @override
   Widget build(BuildContext context) {
     List<String> places = selectedDistrict == null
-        ? []
-        : locations[selectedDistrict]!.keys.toList();
-
+    ? []
+    : locations[selectedDistrict]!.keys.toList();
     return Scaffold(
-      appBar: AppBar(title: const Text("Women Safety App")),
+      backgroundColor: const Color(0xFF0B0F1A),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Column(
             children: [
 
+              // ===========================
+              // FIRST PAGE
+              // ===========================
               if (!_isWalking) ...[
-                DropdownButtonFormField<String>(
+                const SizedBox(height: 40),
+
+                // SHIELD ICON
+                Container(
+                  width: 110,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFEC4899), Color(0xFF8B5CF6)],
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.shield_outlined,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                const Text(
+                  "SafeWalk",
+                  style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+
+                const SizedBox(height: 8),
+
+                const Text(
+                  "Your trusted safety companion",
+                  style: TextStyle(color: Colors.white54),
+                ),
+
+                const SizedBox(height: 40),
+
+                _buildDropdown(
+                  label: "DISTRICT",
                   value: selectedDistrict,
-                  items: locations.keys
-                      .map((d) => DropdownMenuItem(
-                            value: d,
-                            child: Text(d),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
+                  items: locations.keys.toList(),
+                  onChanged: (val) {
                     setState(() {
-                      selectedDistrict = value;
+                      selectedDistrict = val;
                       selectedPlace = null;
                     });
                   },
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Select District"),
                 ),
-                const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
-                  value: selectedPlace,
-                  items: places
-                      .map((p) => DropdownMenuItem(
-                            value: p,
-                            child: Text(p),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedPlace = value;
-                    });
-                  },
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Select Place"),
-                ),
-                const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
-                  value: selectedTimerLabel,
-                  items: timerOptions.keys
-                      .map((t) => DropdownMenuItem(
-                            value: t,
-                            child: Text(t),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedTimerLabel = value;
-                      _selectedTimerSeconds = timerOptions[value]!;
-                    });
-                  },
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Select Alert Timer"),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                    onPressed: _startWalk,
-                    child: const Text("Start Walk")),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                    onPressed: _sendSOS,
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    child: const Text("🚨 SEND SOS")),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                    onPressed: _triggerFakeCall,
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange),
-                    child: const Text("📞 Fake Call")),
-                const SizedBox(height: 10),
 
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const CalculatorScreen()),
-                    );
+                const SizedBox(height: 16),
+
+                _buildDropdown(
+                  label: "PLACE",
+                  value: selectedPlace,
+                  items: places,
+                  onChanged: (val) {
+                    setState(() {
+                      selectedPlace = val;
+                    });
                   },
-                  child: const Text("home"),
+                ),
+
+                const SizedBox(height: 16),
+
+                _buildDropdown(
+                  label: "ALERT TIMER",
+                  value: selectedTimerLabel,
+                  items: timerOptions.keys.toList(),
+                  onChanged: (val) {
+                    setState(() {
+                      selectedTimerLabel = val;
+                      _selectedTimerSeconds = timerOptions[val]!;
+                    });
+                  },
+                ),
+
+                const SizedBox(height: 30),
+
+                _buildMainButton(
+                  text: "🚶 Start Walk",
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFEC4899), Color(0xFF8B5CF6)],
+                  ),
+                  onPressed: _startWalk,
+                ),
+
+                const SizedBox(height: 16),
+
+                _buildMainButton(
+                  text: "🚨 SOS Emergency",
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
+                  ),
+                  onPressed: _sendSOS,
                 ),
               ],
 
+              // ===========================
+              // WALKING PAGE (NO SOS)
+              // ===========================
               if (_isWalking) ...[
                 const SizedBox(height: 30),
-                Text("Check-in in:",
-                    style: const TextStyle(fontSize: 20)),
-                const SizedBox(height: 10),
-                Text(formatTime(_remainingCheckIn),
-                    style: const TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.pink)),
-                const SizedBox(height: 30),
-                ElevatedButton(
-                    onPressed: _checkIn,
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green),
-                    child: const Text("Check In")),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                    onPressed: _iHaveReached,
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue),
-                    child: const Text("I Have Reached")),
+
+                const Text("WALK ACTIVE",
+                    style: TextStyle(
+                        color: Colors.white70,
+                        letterSpacing: 1.5)),
+
+                const SizedBox(height: 8),
+
+                Text(
+                  "${selectedPlace ?? ""}, ${selectedDistrict ?? ""}",
+                  style: const TextStyle(color: Colors.white54),
+                ),
+
+                const SizedBox(height: 40),
+
+                SizedBox(
+                  width: 250,
+                  height: 250,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        value:
+                            _remainingCheckIn / _selectedTimerSeconds,
+                        strokeWidth: 12,
+                        backgroundColor: Colors.white12,
+                        valueColor:
+                            const AlwaysStoppedAnimation<Color>(
+                                Colors.pink),
+                      ),
+                      Text(
+                        formatTime(_remainingCheckIn),
+                        style: const TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.pink),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                _simpleButton(
+                  text: "✓ I'm Safe — Check In",
+                  color: Colors.green,
+                  onPressed: _checkIn,
+                ),
+
+                const SizedBox(height: 16),
+
+                _simpleButton(
+                  text: "🏠 I Have Reached",
+                  color: Colors.blue,
+                  onPressed: _iHaveReached,
+                ),
               ],
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  // ==============================
+  // HELPERS
+  // ==============================
+
+  Widget _buildDropdown({
+    required String label,
+    required String? value,
+    required List<String> items,
+    required Function(String?) onChanged,
+  }) {
+    return DropdownButtonFormField<String>(
+      value: value,
+      dropdownColor: const Color(0xFF111827),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: Colors.white54),
+        filled: true,
+        fillColor: const Color(0xFF111827),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+        ),
+      ),
+      style: const TextStyle(color: Colors.white),
+      items: items
+          .map((e) =>
+              DropdownMenuItem(value: e, child: Text(e)))
+          .toList(),
+      onChanged: onChanged,
+    );
+  }
+
+  Widget _buildMainButton({
+    required String text,
+    required Gradient gradient,
+    required VoidCallback onPressed,
+  }) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: gradient,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          padding:
+              const EdgeInsets.symmetric(vertical: 18),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        onPressed: onPressed,
+        child: Text(text,
+            style: const TextStyle(
+                fontSize: 16, color: Colors.white)),
+      ),
+    );
+  }
+
+  Widget _simpleButton({
+    required String text,
+    required Color color,
+    required VoidCallback onPressed,
+  }) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          padding:
+              const EdgeInsets.symmetric(vertical: 18),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        onPressed: onPressed,
+        child: Text(text,
+            style: const TextStyle(fontSize: 16)),
       ),
     );
   }
