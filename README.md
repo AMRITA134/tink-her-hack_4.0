@@ -50,47 +50,35 @@ List the key features of your project:
 ### For Software:
 
 #### Installation
-```bash
-[Installation commands - e.g., npm install, pip install -r requirements.txt]
-```
+install the apk file
 
-#### Run
-```bash
-[Run commands - e.g., npm start, python app.py]
-```
+
 ## Project Documentation
 
 ### For Software:
 
 #### Screenshots (Add at least 3)
 
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+(https://drive.google.com/file/d/1l6C0P8q-Z8ECEK9tMBDNJFX8FBeini62/view?usp=sharing)
+the app opens with calculator(entered the secret combination)
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+https://drive.google.com/file/d/1XwCITjK3cNIL2A-MVTqk3685fkkee2XX/view?usp=sharing
+SafeWalk app
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
-**Application Workflow:**
-
-![Workflow](docs/workflow.png)
-*Add caption explaining your workflow*
-
----
-
-### For Hardware:
-
-#### Schematic & Circuit
-
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
+https://drive.google.com/file/d/1cbnh7hC2WJrZFRzxObAhy_NSn69bQ7wT/view?usp=sharing
+Timer /countdown interval check-in system
 
 
-### For Mobile Apps:
+https://drive.google.com/file/d/16SjHsJAScbNWuuQ1JuHhwc8eHul648yX/view?usp=sharing
+fake caller id
+
+https://drive.google.com/file/d/1EbdqgSenWuinoR8gGrauPoIhBxzqskCe/view?usp=sharing
+fake caller connected page
+
+https://drive.google.com/file/d/1ya3IGDf_hhDLQfjtafpOBIPhXua0w2Hg/view?usp=sharing
+SOS alert message
+
+
 
 #### App Flow Diagram
 
@@ -104,37 +92,24 @@ List the key features of your project:
 #### Installation Guide
 
 **For Android (APK):**
-1. Download the APK from [Release Link]
+1. Download the APK from 
 2. Enable "Install from Unknown Sources" in your device settings:
    - Go to Settings > Security
    - Enable "Unknown Sources"
 3. Open the downloaded APK file
-4. Follow the installation prompts
-5. Open the app and enjoy!
-
-
-**Building from Source:**
-```bash
-# For Android
-flutter build apk
-# or
-./gradlew assembleDebug
-
-# For iOS
-flutter build ios
-# or
-xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug
-```
-
----
-
+4. Open the app and stay safe.
 
 ## Project Demo
 
 ### Video
-[Add your demo video link here - YouTube, Google Drive, etc.]
+https://drive.google.com/file/d/1WAsNPG5yAWJa9Uok7K0Ty1ES0g0QRp00/view?usp=sharing
 
-*Explain what the video demonstrates - key features, user flow, technical highlights*
+showcases:
+1)hidden app
+2)interval check-in system
+3)SOS Alert System
+4)Fake caller ID
+5)emergency calling from calculator
 
 ## AI Tools Used (Optional - For Transparency Bonus)
 
@@ -157,9 +132,8 @@ xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug
 
 ## Team Contributions
 
-- [Name 1]: [Specific contributions - e.g., Frontend development, API integration, etc.]
-- [Name 2]: [Specific contributions - e.g., Backend development, Database design, etc.]
-- [Name 3]: [Specific contributions - e.g., UI/UX design, Testing, Documentation, etc.]
+- Amrita Jyothi: Frontend,brainstroming
+- Theres Manuela: ui designing,brainstroming
 
 ---
 
