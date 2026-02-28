@@ -34,10 +34,7 @@ dependencies:
   permission_handler: ^11.0.0
   url_launcher: ^6.2.2
   audioplayers: ^5.2.1
-  firebase_core: ^2.27.0
-  cloud_firestore: ^4.15.0
-  firebase_storage: ^11.6.0
-  firebase_auth: ^4.17.0
+  
   
 
   # The following adds the Cupertino Icons font to your application.

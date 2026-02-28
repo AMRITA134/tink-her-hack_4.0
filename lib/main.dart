@@ -4,11 +4,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+void main() {
   runApp(const SafeWalkApp());
 }
 
@@ -19,7 +16,7 @@ class SafeWalkApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: WalkWithMeScreen(),
+      home: CalculatorScreen(),
     );
   }
 }
@@ -320,6 +317,18 @@ class _WalkWithMeScreenState extends State<WalkWithMeScreen> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange),
                     child: const Text("📞 Fake Call")),
+                const SizedBox(height: 10),
+
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const CalculatorScreen()),
+                    );
+                  },
+                  child: const Text("home"),
+                ),
               ],
 
               if (_isWalking) ...[
@@ -606,6 +615,152 @@ class _CallConnectedScreenState extends State<CallConnectedScreen>
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+class CalculatorScreen extends StatefulWidget {
+  const CalculatorScreen({super.key});
+
+  @override
+  State<CalculatorScreen> createState() => _CalculatorScreenState();
+}
+
+class _CalculatorScreenState extends State<CalculatorScreen> {
+  String input = "";
+  String result = "0";
+
+  void buttonPressed(String value) async {
+    if (value == "C") {
+      setState(() {
+        input = "";
+        result = "0";
+      });
+      return;
+    }
+
+    if (value == "=") {
+      // 🔐 SECRET: Open Hidden Safety App
+      if (input == "//*+-") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const WalkWithMeScreen(),
+          ),
+        );
+        return;
+      }
+
+      // Normal calculation
+      try {
+        final res = double.parse(input);
+        setState(() {
+          result = res.toString();
+        });
+      } catch (_) {
+        setState(() {
+          result = "Error";
+        });
+      }
+
+      return;
+    }
+
+    setState(() {
+      input += value;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // DISPLAY
+            Expanded(
+              flex: 2,
+              child: Container(
+                alignment: Alignment.bottomRight,
+                padding: const EdgeInsets.all(24),
+                child: Text(
+                  input.isEmpty ? result : input,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 48,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ),
+            ),
+
+            // BUTTON GRID
+            Expanded(
+              flex: 5,
+              child: Column(
+                children: [
+                  buildRow(["C", "(", ")", "/"]),
+                  buildRow(["7", "8", "9", "*"]),
+                  buildRow(["4", "5", "6", "-"]),
+                  buildRow(["1", "2", "3", "+"]),
+                  buildRow(["+/-", "0", ".", "="]),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildRow(List<String> buttons) {
+    return Expanded(
+      child: Row(
+        children: buttons.map((text) => buildButton(text)).toList(),
+      ),
+    );
+  }
+
+  Widget buildButton(String text) {
+    bool isOperator = ["/", "*", "-", "+", "="].contains(text);
+    bool isClear = text == "C";
+
+    Color bgColor;
+    Color textColor;
+
+    if (text == "=") {
+      bgColor = const Color(0xFF8D5A46);
+      textColor = Colors.white;
+    } else {
+      bgColor = const Color(0xFF1E1E2C);
+      textColor = isOperator
+          ? const Color(0xFFD2B8A3)
+          : isClear
+              ? Colors.redAccent
+              : Colors.white;
+    }
+
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: bgColor,
+              shape: const CircleBorder(),
+            ),
+            onPressed: () => buttonPressed(text),
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 24,
+                color: textColor,
+              ),
+            ),
+          ),
         ),
       ),
     );
