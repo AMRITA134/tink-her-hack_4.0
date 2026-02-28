@@ -439,12 +439,12 @@ class _FakeCallScreenState extends State<FakeCallScreen> {
 // ==========================
 // 🔥 CALL CONNECTED SCREEN
 // ==========================
-
 class CallConnectedScreen extends StatefulWidget {
   const CallConnectedScreen({super.key});
 
   @override
-  State<CallConnectedScreen> createState() => _CallConnectedScreenState();
+  State<CallConnectedScreen> createState() =>
+      _CallConnectedScreenState();
 }
 
 class _CallConnectedScreenState extends State<CallConnectedScreen>
@@ -456,7 +456,6 @@ class _CallConnectedScreenState extends State<CallConnectedScreen>
   void initState() {
     super.initState();
 
-    // Animated pulse effect
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
@@ -474,6 +473,7 @@ class _CallConnectedScreenState extends State<CallConnectedScreen>
 
   Widget _callOption(IconData icon, String label) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         CircleAvatar(
           radius: 28,
@@ -481,7 +481,9 @@ class _CallConnectedScreenState extends State<CallConnectedScreen>
           child: Icon(icon, color: Colors.black87),
         ),
         const SizedBox(height: 8),
-        Text(label, style: const TextStyle(color: Colors.black87)),
+        Text(label,
+            style: const TextStyle(
+                color: Colors.black87, fontSize: 14)),
       ],
     );
   }
@@ -491,95 +493,116 @@ class _CallConnectedScreenState extends State<CallConnectedScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints:
+                    BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
 
-            const SizedBox(height: 40),
+                      const SizedBox(height: 40),
 
-            const Text(
-              "Dialing",
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500),
-            ),
+                      const Text(
+                        "Dialing",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      ),
 
-            const SizedBox(height: 40),
+                      const SizedBox(height: 40),
 
-            // Animated Profile Circle
-            ScaleTransition(
-              scale: _animation,
-              child: CircleAvatar(
-                radius: 70,
-                backgroundColor: Colors.grey.shade300,
-              ),
-            ),
+                      // Animated Profile
+                      ScaleTransition(
+                        scale: _animation,
+                        child: CircleAvatar(
+                          radius: 70,
+                          backgroundColor:
+                              Colors.grey.shade300,
+                        ),
+                      ),
 
-            const SizedBox(height: 30),
+                      const SizedBox(height: 30),
 
-            const Text(
-              "khun Thee",
-              style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold),
-            ),
+                      const Text(
+                        "khun Thee",
+                        style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold),
+                      ),
 
-            const SizedBox(height: 10),
+                      const SizedBox(height: 10),
 
-            const Text(
-              "476-229-9449",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black54),
-            ),
+                      const Text(
+                        "476-229-9449",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black54),
+                      ),
 
-            const SizedBox(height: 40),
+                      const SizedBox(height: 40),
 
-            const Divider(),
+                      const Divider(),
 
-            const SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
-            // Call Options Row 1
-            Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceEvenly,
-              children: [
-                _callOption(Icons.mic_off, "Mute"),
-                _callOption(Icons.bluetooth, "Bluetooth"),
-                _callOption(Icons.pause_circle_outline, "Hold"),
-              ],
-            ),
+                      // Row 1
+                      Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _callOption(
+                              Icons.mic_off, "Mute"),
+                          _callOption(Icons.bluetooth,
+                              "Bluetooth"),
+                          _callOption(
+                              Icons.pause_circle_outline,
+                              "Hold"),
+                        ],
+                      ),
 
-            const SizedBox(height: 30),
+                      const SizedBox(height: 30),
 
-            // Call Options Row 2
-            Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceEvenly,
-              children: [
-                _callOption(Icons.dialpad, "Keypad"),
-                const SizedBox(width: 60),
-                _callOption(Icons.volume_up, "Speaker"),
-              ],
-            ),
+                      // Row 2
+                      Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _callOption(
+                              Icons.dialpad, "Keypad"),
+                          _callOption(Icons.volume_up,
+                              "Speaker"),
+                        ],
+                      ),
 
-            const Spacer(),
+                      const Spacer(),
 
-            // End Call Button
-            Padding(
-              padding: const EdgeInsets.only(bottom: 40),
-              child: CircleAvatar(
-                radius: 35,
-                backgroundColor: Colors.teal,
-                child: IconButton(
-                  icon: const Icon(Icons.call_end,
-                      color: Colors.white, size: 28),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                      // End Call Button
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(bottom: 40),
+                        child: CircleAvatar(
+                          radius: 35,
+                          backgroundColor: Colors.teal,
+                          child: IconButton(
+                            icon: const Icon(
+                                Icons.call_end,
+                                color: Colors.white,
+                                size: 28),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
