@@ -209,7 +209,28 @@ class _WalkWithMeScreenState extends State<WalkWithMeScreen> {
       _isWalking = false;
     });
   }
+  bool _isFakeCallScheduled = false;
 
+void _triggerFakeCall() {
+  if (_isFakeCallScheduled) return;
+
+  setState(() {
+    _isFakeCallScheduled = true;
+  });
+
+  Future.delayed(const Duration(seconds: 2), () {
+    setState(() {
+      _isFakeCallScheduled = false;
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const FakeCallScreen(),
+      ),
+    );
+  });
+}
   @override
   void dispose() {
     _checkInTimer?.cancel();
@@ -332,6 +353,15 @@ class _WalkWithMeScreenState extends State<WalkWithMeScreen> {
                   ),
                   onPressed: _sendSOS,
                 ),
+                const SizedBox(height: 16),
+
+                _buildMainButton(
+                  text: "📞 Fake Call",
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFD97706), Color(0xFFB45309)],
+                  ),
+                  onPressed: _triggerFakeCall,
+                ),
               ],
 
               // ===========================
@@ -340,41 +370,78 @@ class _WalkWithMeScreenState extends State<WalkWithMeScreen> {
               if (_isWalking) ...[
                 const SizedBox(height: 30),
 
-                const Text("WALK ACTIVE",
-                    style: TextStyle(
+                // WALK ACTIVE LABEL
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.circle, color: Colors.green, size: 10),
+                    SizedBox(width: 8),
+                    Text(
+                      "WALK ACTIVE",
+                      style: TextStyle(
                         color: Colors.white70,
-                        letterSpacing: 1.5)),
+                        letterSpacing: 1.5,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
 
                 const SizedBox(height: 8),
 
                 Text(
                   "${selectedPlace ?? ""}, ${selectedDistrict ?? ""}",
-                  style: const TextStyle(color: Colors.white54),
+                  style: const TextStyle(
+                    color: Colors.white54,
+                    fontSize: 14,
+                  ),
                 ),
 
                 const SizedBox(height: 40),
 
+                // TIMER CIRCLE
                 SizedBox(
                   width: 250,
                   height: 250,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      CircularProgressIndicator(
-                        value:
-                            _remainingCheckIn / _selectedTimerSeconds,
-                        strokeWidth: 12,
-                        backgroundColor: Colors.white12,
-                        valueColor:
-                            const AlwaysStoppedAnimation<Color>(
-                                Colors.pink),
+
+                      // Circular Progress
+                      SizedBox(
+                        width: 250,
+                        height: 250,
+                        child: CircularProgressIndicator(
+                          value: _remainingCheckIn / _selectedTimerSeconds,
+                          strokeWidth: 12,
+                          backgroundColor: Colors.white12,
+                          valueColor:
+                              const AlwaysStoppedAnimation<Color>(Colors.pink),
+                        ),
                       ),
-                      Text(
-                        formatTime(_remainingCheckIn),
-                        style: const TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.pink),
+
+                      // Center Text Column
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "CHECK-IN IN",
+                            style: TextStyle(
+                              color: Colors.white54,
+                              fontSize: 14,
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            formatTime(_remainingCheckIn),
+                            style: const TextStyle(
+                              fontSize: 42,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.pink,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -382,6 +449,7 @@ class _WalkWithMeScreenState extends State<WalkWithMeScreen> {
 
                 const SizedBox(height: 40),
 
+                // I'M SAFE BUTTON
                 _simpleButton(
                   text: "✓ I'm Safe — Check In",
                   color: Colors.green,
@@ -390,11 +458,14 @@ class _WalkWithMeScreenState extends State<WalkWithMeScreen> {
 
                 const SizedBox(height: 16),
 
+                // I HAVE REACHED BUTTON
                 _simpleButton(
                   text: "🏠 I Have Reached",
                   color: Colors.blue,
                   onPressed: _iHaveReached,
                 ),
+
+                const SizedBox(height: 20),
               ],
             ],
           ),
@@ -531,7 +602,7 @@ class _FakeCallScreenState extends State<FakeCallScreen> {
                       size: 70, color: Colors.white),
                 ),
                 SizedBox(height: 20),
-                Text("Khun Thee",
+                Text("Police",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
@@ -664,7 +735,7 @@ class _CallConnectedScreenState extends State<CallConnectedScreen>
                       const SizedBox(height: 30),
 
                       const Text(
-                        "khun Thee",
+                        "Police",
                         style: TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.bold),
@@ -766,32 +837,52 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     }
 
     if (value == "=") {
-      // 🔐 SECRET: Open Hidden Safety App
-      if (input == "//*+-") {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const WalkWithMeScreen(),
-          ),
-        );
-        return;
-      }
 
-      // Normal calculation
-      try {
-        final res = double.parse(input);
-        setState(() {
-          result = res.toString();
-        });
-      } catch (_) {
-        setState(() {
-          result = "Error";
-        });
-      }
+  // 🚨 EMERGENCY NUMBERS
+  if (input == "100" ||
+      input == "101" ||
+      input == "102" ||
+      input == "112") {
 
-      return;
-    }
+    final Uri callUri = Uri(
+      scheme: 'tel',
+      path: input,
+    );
 
+    await launchUrl(callUri);
+    return;
+  }
+
+  // 🔐 SECRET CODE → OPEN SAFETY APP
+  if (input == "1234") {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const WalkWithMeScreen(),
+      ),
+    );
+
+    setState(() {
+      input = "";
+    });
+
+    return;
+  }
+
+  // NORMAL CALCULATOR
+  try {
+    final res = double.parse(input);
+    setState(() {
+      result = res.toString();
+    });
+  } catch (_) {
+    setState(() {
+      result = "Error";
+    });
+  }
+
+  return;
+}
     setState(() {
       input += value;
     });
