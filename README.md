@@ -2,7 +2,7 @@
   <img src="./img.png" alt="Project Banner" width="100%">
 </p>
 
-# ShePowers 🎯
+# SheWalks 🎯
 
 ## Basic Details
 
@@ -13,15 +13,15 @@
 - Member 2: Theres Manuela - AISAT
 
 ### Hosted Project Link
-[mention your project hosted link here]
+https://drive.google.com/file/d/1XO5bb4vVsXxHOUwr2Ml16Nc0vZ7Sih4q/view?usp=sharing
 
 ### Project Description
-ShePowers a safety app designed to help women stay safe on their way back home or other places.
+SheWalks a safety app designed to help women stay safe on their way back home or other places.
 
 ### The Problem statement
 Women feel unsafe while travelling alone, especially while walking back home. There is a need for a safety app that can send SOS alerts, an  interval check-in system, fake caller id system for users to escape uncomfortable or unsafe situations.
 ### The Solution
-This is why we built ShePowers- a personal safety app that has:
+This is why we built SheWalks- a personal safety app that has:
 SOS Alert system -where a sos alert message with the current location can be sent
 Interval check in the system-when the destination is selected by the user, the walk is initialised a timer begins with a check in . If the user doesn't check in an sos alerts in sent
 
@@ -73,10 +73,10 @@ https://drive.google.com/file/d/16SjHsJAScbNWuuQ1JuHhwc8eHul648yX/view?usp=shari
 fake caller id
 
 https://drive.google.com/file/d/1EbdqgSenWuinoR8gGrauPoIhBxzqskCe/view?usp=sharing
-fake caller connected page
+SOS alert message
 
 https://drive.google.com/file/d/1ya3IGDf_hhDLQfjtafpOBIPhXua0w2Hg/view?usp=sharing
-SOS alert message
+Fake Call connected page
 
 
 
