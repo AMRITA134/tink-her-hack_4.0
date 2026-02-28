@@ -2,29 +2,26 @@
   <img src="./img.png" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# ShePowers 🎯
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: Sponjofreaks
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: Amrita Jyothi - AISAT
+- Member 2: Theres Manuela - AISAT
 
 ### Hosted Project Link
 [mention your project hosted link here]
 
 ### Project Description
-[2-3 lines about what your project does]
+ShePowers a safety app designed to help women stay safe on their way back home or other places.
 
 ### The Problem statement
-[What problem are you solving?]
-
+Have you were thought that you need a safety app that can send sos,interval check in system and a fake caller id sytem.
 ### The Solution
-[How are you solving it?]
 
----
 
 ## Technical Details
 
@@ -34,22 +31,15 @@
 - Languages used: [e.g., JavaScript, Python, Java]
 - Frameworks used: [e.g., React, Django, Spring Boot]
 - Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
-
-**For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
-
----
+- Tools used: VS Code
 
 ## Features
 
 List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
+- Feature 1: interval check-in system
+- Feature 2: sos  system
+- Feature 3: fake caller id
+- Feature 4: safety app hidden inside the calculator
 
 ---
 
@@ -66,17 +56,6 @@ List the key features of your project:
 ```bash
 [Run commands - e.g., npm start, python app.py]
 ```
-
-### For Hardware:
-
-#### Components Required
-[List all components needed with specifications]
-
-#### Circuit Setup
-[Explain how to set up the circuit]
-
----
-
 ## Project Documentation
 
 ### For Software:
