@@ -19,25 +19,27 @@
 ShePowers a safety app designed to help women stay safe on their way back home or other places.
 
 ### The Problem statement
-Have you were thought that you need a safety app that can send sos,interval check in system and a fake caller id sytem.
+Women feel unsafe while travelling alone, especially while walking back home. There is a need for a safety app that can send SOS alerts, an  interval check-in system, fake caller id system for users to escape uncomfortable or unsafe situations.
 ### The Solution
-
+This is why we built ShePowers- a personal safety app that has:
+SOS Alert system -where a sos alert message with the current location can be sent
+Interval check in the system-when the destination is selected by the user, the walk is initialised a timer begins with a check in . If the user doesn't check in an sos alerts in sent
 
 ## Technical Details
 
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
+- Languages used:Dart
+- Frameworks used: Flutter
+- Libraries used: geoloacator(flutter)
 - Tools used: VS Code
 
 ## Features
 
 List the key features of your project:
 - Feature 1: interval check-in system
-- Feature 2: sos  system
+- Feature 2: SOS  system
 - Feature 3: fake caller id
 - Feature 4: safety app hidden inside the calculator
 
@@ -70,14 +72,6 @@ List the key features of your project:
 
 ![Screenshot3](Add screenshot 3 here with proper name)
 *Add caption explaining what this shows*
-
-#### Diagrams
-
-**System Architecture:**
-
-![Architecture Diagram](docs/architecture.png)
-*Explain your system architecture - components, data flow, tech stack interaction*
-
 **Application Workflow:**
 
 ![Workflow](docs/workflow.png)
@@ -95,72 +89,18 @@ List the key features of your project:
 ![Schematic](Add your schematic diagram here)
 *Add caption explaining the schematic*
 
-#### Build Photos
-
-![Team](Add photo of your team here)
-
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
-
----
-
-## Additional Documentation
-
-### For Web Projects with Backend:
-
-#### API Documentation
-
-**Base URL:** `https://api.yourproject.com`
-
-##### Endpoints
-
-**GET /api/endpoint**
-- **Description:** [What it does]
-- **Parameters:**
-  - `param1` (string): [Description]
-  - `param2` (integer): [Description]
-- **Response:**
-```json
-{
-  "status": "success",
-  "data": {}
-}
-```
-
-**POST /api/endpoint**
-- **Description:** [What it does]
-- **Request Body:**
-```json
-{
-  "field1": "value1",
-  "field2": "value2"
-}
-```
-- **Response:**
-```json
-{
-  "status": "success",
-  "message": "Operation completed"
-}
-```
-
-[Add more endpoints as needed...]
-
----
 
 ### For Mobile Apps:
 
 #### App Flow Diagram
 
 ![App Flow](docs/app-flow.png)
-*Explain the user flow through your application*
-
+1)user enter secret code to enter the app or enter emergency contact numbers
+  1.1)if user enter secret code enter the safety app
+  1.2)if user enter emergency contacts like 100,101 etc the call is been made.
+2)user can select destination from the drop down menu and select 'Start Walk',the timer is initialized .if the user doesn't checks-in within the time limit a sos alert is sent with current location .
+3)user can select SOS alert that sends alert message with current location.
+4)user can create a fake call from the 'fake call 'option and a fake call in initilized with call attenting option also.
 #### Installation Guide
 
 **For Android (APK):**
@@ -172,12 +112,6 @@ List the key features of your project:
 4. Follow the installation prompts
 5. Open the app and enjoy!
 
-**For iOS (IPA) - TestFlight:**
-1. Download TestFlight from the App Store
-2. Open this TestFlight link: [Your TestFlight Link]
-3. Click "Install" or "Accept"
-4. Wait for the app to install
-5. Open the app from your home screen
 
 **Building from Source:**
 ```bash
