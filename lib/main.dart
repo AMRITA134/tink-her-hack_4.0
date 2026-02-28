@@ -854,7 +854,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   // 🔐 SECRET CODE → OPEN SAFETY APP
-  if (input == "1234") {
+  if (input == "//*+-") {
     Navigator.push(
       context,
       MaterialPageRoute(
